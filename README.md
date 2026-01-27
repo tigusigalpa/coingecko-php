@@ -5,7 +5,6 @@
 ![CoinGecko PHP SDK](https://github.com/user-attachments/assets/bab9bea7-a93c-445f-8db3-862576b96977)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tigusigalpa/coingecko-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/coingecko-php)
-[![Total Downloads](https://img.shields.io/packagist/dt/tigusigalpa/coingecko-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/coingecko-php)
 [![License](https://img.shields.io/packagist/l/tigusigalpa/coingecko-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/coingecko-php)
 
 A comprehensive, modern PHP/Laravel package for seamless integration with
