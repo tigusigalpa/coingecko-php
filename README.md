@@ -11,6 +11,8 @@ A comprehensive, modern PHP/Laravel package for seamless integration with
 the [CoinGecko API](https://www.coingecko.com/en/api). Get real-time cryptocurrency prices, market data, historical
 charts, and more with an elegant, developer-friendly interface.
 
+**📦 Package:** [pkg.go.dev/github.com/tigusigalpa/coingecko-go](https://pkg.go.dev/github.com/tigusigalpa/coingecko-go)
+
 [Features](#features) • [Installation](#installation) • [Quick Start](#quick-start) • [Documentation](#documentation) • [Examples](#examples)
 
 </div>
