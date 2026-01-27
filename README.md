@@ -114,6 +114,16 @@ The package is organized into logical API groups:
 - **[Simple API](#simple-api)** - Quick price lookups and supported currencies
 - **[Coins API](#coins-api)** - Comprehensive coin data, markets, and historical charts
 - **[Contract API](#contract-api)** - Token data by contract address
+- **[Asset Platforms API](#asset-platforms-api)** - Asset platforms and token lists
+- **[Categories API](#categories-api)** - Coin categories with market data
+- **[Exchanges API](#exchanges-api)** - Exchange data, tickers, and volume charts
+- **[Derivatives API](#derivatives-api)** - Derivatives tickers and exchanges
+- **[Entities API](#entities-api)** - Crypto treasury holdings and transactions
+- **[NFTs API](#nfts-api)** - NFT collections and market data
+- **[Exchange Rates API](#exchange-rates-api)** - BTC-to-currency exchange rates
+- **[Search API](#search-api)** - Search queries and trending data
+- **[Global API](#global-api)** - Global crypto and DeFi market data
+- **[WebSocket API](#websocket-api)** - Real-time WebSocket subscriptions
 - **[Ping API](#ping-api)** - Server status and API usage
 
 ---
@@ -387,6 +397,435 @@ $tokenRangeChart = $coingecko->contract()->marketChartRange(
     from: 1609459200,
     to: 1640995200
 );
+```
+
+---
+
+### Asset Platforms API
+
+Get information about blockchain platforms and their tokens.
+
+#### Get Asset Platforms List
+
+```php
+// Get all asset platforms
+$platforms = $coingecko->assetPlatforms()->list();
+
+// Filter platforms
+$filtered = $coingecko->assetPlatforms()->list(filter: 'nft');
+```
+
+#### Get Token Lists by Platform
+
+```php
+// Get all tokens on a specific platform
+$tokens = $coingecko->assetPlatforms()->tokenLists(
+    assetPlatformId: 'ethereum',
+    page: 1
+);
+```
+
+---
+
+### Categories API
+
+Access cryptocurrency categories and their market data.
+
+#### Get Categories List (ID Map)
+
+```php
+// Get list of all coin categories
+$categories = $coingecko->categories()->list();
+```
+
+#### Get Categories with Market Data
+
+```php
+// Get categories with market data
+$categoriesData = $coingecko->categories()->listWithMarketData(
+    order: 'market_cap_desc'
+);
+
+// Available order options: market_cap_desc, market_cap_asc, name_desc, name_asc, 
+// market_cap_change_24h_desc, market_cap_change_24h_asc
+```
+
+---
+
+### Exchanges API
+
+Access exchange data, tickers, and volume information.
+
+#### Get Exchanges List with Data
+
+```php
+// Get all exchanges with data
+$exchanges = $coingecko->exchanges()->list(
+    perPage: 100,
+    page: 1
+);
+```
+
+#### Get Exchanges List (ID Map)
+
+```php
+// Get simple list of exchange IDs
+$exchangeIds = $coingecko->exchanges()->listIdMap();
+```
+
+#### Get Exchange Data by ID
+
+```php
+// Get detailed data for a specific exchange
+$binance = $coingecko->exchanges()->exchange('binance');
+```
+
+#### Get Exchange Tickers
+
+```php
+// Get all tickers for an exchange
+$tickers = $coingecko->exchanges()->tickers(
+    id: 'binance',
+    coinIds: ['bitcoin', 'ethereum'],
+    includeExchangeLogo: true,
+    page: 1,
+    depth: 'true',
+    order: 'volume_desc'
+);
+```
+
+#### Get Exchange Volume Chart
+
+```php
+// Get volume chart for an exchange
+$volumeChart = $coingecko->exchanges()->volumeChart(
+    id: 'binance',
+    days: 30
+);
+
+// Get volume chart for specific time range
+$volumeRange = $coingecko->exchanges()->volumeChartRange(
+    id: 'binance',
+    from: 1609459200,
+    to: 1640995200
+);
+```
+
+---
+
+### Derivatives API
+
+Access derivatives market data and exchanges.
+
+#### Get Derivatives Tickers
+
+```php
+// Get all derivatives tickers
+$derivativesTickers = $coingecko->derivatives()->tickers(
+    includeTickers: 'unexpired'
+);
+```
+
+#### Get Derivatives Exchanges
+
+```php
+// Get all derivatives exchanges
+$derivativesExchanges = $coingecko->derivatives()->exchanges(
+    order: 'open_interest_btc_desc',
+    perPage: 100,
+    page: 1
+);
+```
+
+#### Get Derivatives Exchange by ID
+
+```php
+// Get specific derivatives exchange data
+$exchange = $coingecko->derivatives()->exchange(
+    id: 'binance_futures',
+    includeTickers: 'all'
+);
+```
+
+#### Get Derivatives Exchanges List (ID Map)
+
+```php
+// Get simple list of derivatives exchange IDs
+$exchangeIds = $coingecko->derivatives()->exchangesList();
+```
+
+---
+
+### Entities API
+
+Access crypto treasury holdings and transaction history.
+
+#### Get Entities List (ID Map)
+
+```php
+// Get list of all entities
+$entities = $coingecko->entities()->list();
+```
+
+#### Get Crypto Treasury Holdings by Coin ID
+
+```php
+// Get companies holding Bitcoin
+$bitcoinHolders = $coingecko->entities()->treasuryByCoinId('bitcoin');
+
+// Get companies holding Ethereum
+$ethereumHolders = $coingecko->entities()->treasuryByCoinId('ethereum');
+```
+
+#### Get Crypto Treasury Holdings by Entity ID
+
+```php
+// Get treasury holdings for a specific entity
+$treasury = $coingecko->entities()->treasuryByEntityId(
+    entityId: 'microstrategy',
+    coinId: 'bitcoin'
+);
+```
+
+#### Get Treasury Historical Chart
+
+```php
+// Get historical treasury chart data
+$chart = $coingecko->entities()->treasuryChart(
+    entityId: 'microstrategy',
+    coinId: 'bitcoin',
+    days: 365
+);
+```
+
+#### Get Treasury Transaction History
+
+```php
+// Get transaction history for an entity
+$transactions = $coingecko->entities()->transactionHistory(
+    entityId: 'microstrategy',
+    coinId: 'bitcoin',
+    page: 1,
+    perPage: 100
+);
+```
+
+---
+
+### NFTs API
+
+Access NFT collections and market data.
+
+#### Get NFTs List (ID Map)
+
+```php
+// Get list of all NFT collections
+$nfts = $coingecko->nfts()->list(
+    order: 'h24_volume_native_desc',
+    assetPlatformId: 'ethereum',
+    perPage: 100,
+    page: 1
+);
+```
+
+#### Get NFT Collection Data by ID
+
+```php
+// Get detailed NFT collection data
+$collection = $coingecko->nfts()->collection('cryptopunks');
+```
+
+#### Get NFT Collection by Contract Address
+
+```php
+// Get NFT data by contract address
+$nft = $coingecko->nfts()->collectionByContract(
+    assetPlatformId: 'ethereum',
+    contractAddress: '0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb'
+);
+```
+
+#### Get NFTs List with Market Data
+
+```php
+// Get NFT collections with market data
+$nftMarkets = $coingecko->nfts()->markets(
+    assetPlatformId: 'ethereum',
+    order: 'h24_volume_native_desc',
+    perPage: 100,
+    page: 1
+);
+```
+
+#### Get NFT Collection Market Chart
+
+```php
+// Get market chart for NFT collection
+$chart = $coingecko->nfts()->marketChart(
+    id: 'cryptopunks',
+    days: 30
+);
+
+// Get market chart by contract address
+$chartByContract = $coingecko->nfts()->marketChartByContract(
+    assetPlatformId: 'ethereum',
+    contractAddress: '0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb',
+    days: 30
+);
+```
+
+#### Get NFT Collection Tickers
+
+```php
+// Get tickers for NFT collection
+$tickers = $coingecko->nfts()->tickers('cryptopunks');
+```
+
+---
+
+### Exchange Rates API
+
+Get BTC-to-currency exchange rates.
+
+#### Get BTC Exchange Rates
+
+```php
+// Get Bitcoin exchange rates for all currencies
+$rates = $coingecko->exchangeRates()->rates();
+
+// Returns rates for BTC to USD, EUR, and many other currencies
+```
+
+---
+
+### Search API
+
+Search for coins, exchanges, and categories, and get trending data.
+
+#### Search Queries
+
+```php
+// Search for coins, exchanges, categories, and NFTs
+$results = $coingecko->search()->search('bitcoin');
+
+// Returns:
+// [
+//     'coins' => [...],
+//     'exchanges' => [...],
+//     'categories' => [...],
+//     'nfts' => [...]
+// ]
+```
+
+#### Get Trending Search List
+
+```php
+// Get trending searches
+$trending = $coingecko->search()->trending();
+
+// Returns trending coins, NFTs, and categories
+```
+
+---
+
+### Global API
+
+Access global cryptocurrency and DeFi market data.
+
+#### Get Crypto Global Market Data
+
+```php
+// Get global crypto market data
+$globalData = $coingecko->global()->crypto();
+
+// Returns total market cap, volume, market cap percentage, etc.
+```
+
+#### Get Global DeFi Market Data
+
+```php
+// Get global DeFi market data
+$defiData = $coingecko->global()->defi();
+
+// Returns DeFi market cap, volume, and other metrics
+```
+
+#### Get Global Market Cap Chart
+
+```php
+// Get global market cap chart
+$marketCapChart = $coingecko->global()->marketCapChart(
+    days: 30,
+    vsCurrency: 'usd'
+);
+```
+
+---
+
+### WebSocket API
+
+Real-time WebSocket subscriptions for live data (Beta).
+
+#### Get WebSocket URL
+
+```php
+// Get WebSocket connection URL
+$wsUrl = $coingecko->webSocket()->getWebSocketUrl();
+// Returns: wss://ws-pro.coingecko.com/v1
+```
+
+#### Create Simple Price Subscription
+
+```php
+// Create subscription message for simple price updates
+$subscription = $coingecko->webSocket()->createSimplePriceSubscription(
+    coinIds: ['bitcoin', 'ethereum'],
+    vsCurrencies: ['usd', 'eur']
+);
+
+// Send this JSON message through your WebSocket connection
+```
+
+#### Create Onchain Token Price Subscription
+
+```php
+// Subscribe to onchain token prices
+$subscription = $coingecko->webSocket()->createOnchainSimpleTokenPriceSubscription(
+    network: 'eth',
+    addresses: ['0x1f9840a85d5af5bf1d1762f925bdaddc4201f984'],
+    vsCurrencies: ['usd']
+);
+```
+
+#### Create Onchain Trade Subscription
+
+```php
+// Subscribe to onchain trades
+$subscription = $coingecko->webSocket()->createOnchainTradeSubscription(
+    network: 'eth',
+    poolAddress: '0x...'
+);
+```
+
+#### Create Onchain OHLCV Subscription
+
+```php
+// Subscribe to onchain OHLCV data
+$subscription = $coingecko->webSocket()->createOnchainOhlcvSubscription(
+    network: 'eth',
+    poolAddress: '0x...',
+    timeframe: '1m' // 1m, 5m, 15m, 1h, 4h, 1d
+);
+```
+
+#### Unsubscribe and Ping
+
+```php
+// Unsubscribe from a channel
+$unsubscribe = $coingecko->webSocket()->createUnsubscribeMessage('cg_simple_price');
+
+// Create ping message to keep connection alive
+$ping = $coingecko->webSocket()->createPingMessage();
 ```
 
 ---
@@ -676,10 +1115,6 @@ class CachedCoinGeckoService
 composer test
 ```
 
-## 📝 Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -717,7 +1152,5 @@ The MIT License (MIT). Please see [License File](LICENSE) for more information.
 <div align="center">
 
 **[⬆ back to top](#coingecko-phplaravel-api-client)**
-
-Made with ❤️ by [Igor Sazonov](https://github.com/tigusigalpa)
 
 </div>
